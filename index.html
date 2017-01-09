@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name='apple-mobile-web-app-capable' content='yes'>
+<link rel='apple-touch-icon' href='assets/img/avatar.png'>
+<link rel="apple-touch-startup-image" href="assets/img/splash.png">
+<link rel='shortcut icon' href='favicon.ico'>
+<title>PASSPORT</title>
+    
+<link rel='stylesheet' id='bootstrap-css'  href='assets/css/bootstrap.css' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css'  href='assets/css/font-awesome.css' type='text/css' media='all' />
+<link rel='stylesheet' id='styles-css'  href='assets/css/styles.css' type='text/css' media='all' />
+    
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Chancery Passport" />
+<meta property="og:description" content="Own Your Identity" />
+<meta property="og:url" content="http://bce.asia/chancery" />
+<meta property="og:site_name" content="bce.asia" />
+<meta property="og:image" content="http://bce.asia/assets/img/mobile-passport.png" />
+    
+<script>
+var chancery_google_maps_api_key = 'AIzaSyB-zpPFFUqAZm_KMuQOb7IbVtIShEFPPP8';    
+</script>
+    
+</head>
+<body class="loading">
+
+<div id="wrapper">
+    
+    <nav id="header" class="preload">
+        <a href="#" class="page-nav pull-left" id="nav-profile" data-direction="right"><div class="ux-set ux-01"></div></a>
+        <a href="http://bce.asia/chancery/" target="_blank" class="logo">CHANCERY PASSPORT</a>
+        <a href="#" class="page-nav pull-right" id="nav-settings" data-direction="left"><div class="ux-set ux-02"></div></a>
+    </nav>
+
+    <div id="content" class="preload">
+        <div class="page active" id="page-visas">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs row" role="tablist">
+                <li class="active col-xs-4">
+                    <a href="#services" data-toggle="tab">SERVICES</a>
+                </li>
+                <li class="col-xs-4">
+                    <a href="#people" data-toggle="tab">PEOPLE</a>
+                </li>
+                <li class="col-xs-4">
+                    <a href="#pinned" data-toggle="tab">PINNED</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="services">
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-10"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Blockchain Embassy <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#demo-only">APPLY</a> <a href="#" class="btn btn-xs" data-toggle="modal" data-target="#demo-only">PIN</a></h4>
+                            <p>Malaysia's first public blockchain consortium - working together to understand distributed ledgers</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-01"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>ATA-Plus Community <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#login-modal">ACCESS</a></h4>
+                            <p>World's first blockchain-enhanced licensed ECF platform accepting direct Bitcoin investments for regulated businesses</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-09"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>1337 Accelerator <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#demo-only">PENDING</a></h4>
+                            <p>The leading pre-alpha accelerator in South East Asia - turning digital ideas into a investment worthy reality throughout the region</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-02"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Maybank <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#demo-only">APPLY</a> <a href="#" class="btn btn-xs" data-toggle="modal" data-target="#demo-only">PIN</a></h4>
+                            <p>One of the largest banks in Malaysia - heavily supporting FinTech</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-03"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>RHB Trustees <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#demo-only">APPLY</a> <a href="#" class="btn btn-xs" data-toggle="modal" data-target="#demo-only">PIN</a></h4>
+                            <p>Tsutee services with extensive multi-signature ledger knowledge</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-08"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Mah Weng Kwai <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#demo-only">APPLY</a> <a href="#" class="btn btn-xs" data-toggle="modal" data-target="#demo-only">PIN</a></h4>
+                            <p>A legal law-firm looking to harness the power of smart contracts</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-05"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>iTrain Asia <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#demo-only">APPLY</a> <a href="#" class="btn btn-xs" data-toggle="modal" data-target="#demo-only">PIN</a></h4>
+                            <p>One of the leading technical education providers in Asia</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-04"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Capital Bay <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#demo-only">APPLY</a> <a href="#" class="btn btn-xs" data-toggle="modal" data-target="#demo-only">PIN</a></h4>
+                            <p>Invoice finance sepcialists</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="service-set service-06"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Chain of Things <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#demo-only">APPLY</a> <a href="#" class="btn btn-xs" data-toggle="modal" data-target="#demo-only">PIN</a></h4>
+                            <p>IoT hardware intgerators</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="people">
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="people-set person-03"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Zayan Yassin <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#messages-modal">MESSAGES</a></h4>
+                            <p>
+                                Service: <b>ATA-Plus</b><br />
+                                Position: <b>Customer Support</b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="pinned">
+                    <div class="fixed-stamps">
+                        <a href="#" data-toggle="modal" data-target="#service-modal2">
+                            <div class="service-set service-10"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#service-modal2">
+                            <div class="service-set service-01"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-connect" style="display: none">
+            <div class="centered">
+                <div class="cell">
+                    <p>HTML5 Camera Access Flakey - Upload Photo of QR Instead</p>
+                    <a href="#" class="btn btn-block btn-xl btn-primary" data-toggle="modal" data-target="#demo-only">UPLOAD</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-stamps" style="display: none">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs row" role="tablist">
+                <li class="active col-xs-4">
+                    <a href="#milestones" data-toggle="tab">MILESTONES</a>
+                </li>
+                <li class="col-xs-4">
+                    <a href="#pins" data-toggle="tab">PINNED</a>
+                </li>
+                <li class="col-xs-4">
+                    <a href="#progress" data-toggle="tab">PROGRESS</a>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="milestones">
+                    <div class="fixed-stamps">
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-01 active"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-02"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-00"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-03"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-04"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-05"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-06"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-07"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-08"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-09"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-10"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-11"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-12"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-13"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-14"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-15"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-16"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal">
+                            <div class="stamp-set stamp-17"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="tab-pane" id="pins">
+                    <div class="fixed-stamps">
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-01 active"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-02"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-00"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-03"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-04"></div>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#milestone-modal2">
+                            <div class="stamp-set stamp-05"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="tab-pane" id="progress">
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="stamp-set stamp-02 active"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Secure Wallet <a class="btn btn-default btn-xs">FINANCIAL</a></h4>
+                            <p>Need to setup a multi-signature trustee service that allows for account recovery</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="stamp-set stamp-03 active"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Accelerate Idea <a class="btn btn-default btn-xs">SOCIAL</a></h4>
+                            <p>Join an accelerator to validate your idea and notarize ownership of that idea</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="stamp-set stamp-05 active"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Apply to Bank <a class="btn btn-default btn-xs">FINANCIAL</a></h4>
+                            <p>My graduating from the accelerator with your first angel investment, it is time to open a bank account before taking things to the next level</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="stamp-set stamp-00 active"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Raise Funds <a class="btn btn-default btn-xs">SOCIAL</a></h4>
+                            <p>With your bank account open, you can now start a crowdfunding campaign</p>
+                        </div>
+                    </div>
+                    <div class="row stamps">
+                        <div class="col-xs-4 stamp">
+                            <div class="stamp-set stamp-04 active"></div>
+                        </div>
+                        <div class="col-xs-8 postage">
+                            <h4>Setup Trustees <a class="btn btn-default btn-xs">LEGAL</a></h4>
+                            <p>With trustee services, you can also apply for multi-signature escrow</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page padded" id="page-profile" style="display: none">
+            <span class="alert alert-info alert-block">
+                <strong>PERSONAL QR</strong>
+                This is your unique identifier and can safely be shared with other people or even scanned by other applications
+            </span>
+            <div class="qr-holder" data-content=""></div>
+            <span class="alert alert-warning alert-block">
+                <strong>PERSONAL DETAILS</strong>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-4">
+                        <a href="#" class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-profile">EDIT</a>
+                    </div>
+                    <div class="col-xs-4">
+                        <a href="#" class="btn btn-danger btn-logout btn-block">LOGOUT</a>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
+                <hr>
+                This is the information that you will be sharing
+                <hr>
+                Name: <b class="profile-name">N/A</b><br />
+                Country of Birth: <b class="profile-cob">N/A</b>
+                <hr>
+                Master Extended Public Key (Personal QR):<br />
+                <b class="profile-key" style="word-wrap: break-word;">N/A</b>
+            </span>
+        </div>
+        <div class="page padded" id="page-settings" style="display: none">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Who or what is the Blockchain Embassy?
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <p>The Blockchain Embassy of Asia is a non-profit digitally distributed organization that is using and promoting blockchain governance as a method for collaboration between various business entities and existing community efforts across Asia.</p>
+                            <hr>
+                            <p><strong>Our mission is to educate organizations in both the legal and technical implications of distributed ledgers.</strong></p>
+                            <hr>
+
+                            <p>Our nine founding members are working together to explore new distributed use cases whilst bridging the technical divide between organizations, national agencies and regulators throughout the region. Please visit <a href="http://bce.asia" targget="_blank">BCE.asia</a> for more information.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                What is Chancery?
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <p>The long-term vision for the Blockchain Embassy is for it to address the issue of distributed governance - in order to provide it's members with a shared platform that no single entity controls, from where they vote upon important issues that they equally own, such as all web-accessible content and internal financial responsibility.</p>
+                            <p>Chancery is the name of the project that we started working on in December of 2016 in order to compete in the Virtual Blockchain GovHack taking place in Dubai. It utilizes the Cortex blockchain operating system from <a href="http://neuroware.io" target="_blank">Neuroware.io</a> so is able to function upon a number of different blockchains, with full out-of-the-box functionality for Bitcoin, Dogecoin and Dash.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                What is the Chancery Passport?
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <p>The Chancery Passport is an OpenSource HTML5 mobile-first web-application that is built upon the BlockAuth protocol managed by <a href="http://neuroware.io" target="_blank">Neuroware.io</a> and allows users to manage their own identities providing a platform for services to endorse and authorize users without the need for multiple usernames and passwords.</p>
+                            <p>Chancery Passport is the name of the project that we started working on in December of 2016 in order to compete in the Virtual Blockchain GovHack taking place in Dubai. It utilizes the <a href="http://blockstrap.com" target="_blank">Blockstrap.com</a> HTML5 framework so is able to function upon a number of different blockchains, with full out-of-the-box functionality for Bitcoin, Dogecoin and Dash.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingFour">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                What are Chancery visas?
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                        <div class="panel-body">
+                            <p>Technically speaking, VISAS are really just a decentralized system for managing, whilst simplifying and improvng the functionality of web-cookies. It's a graphical representation of the BlockAuth protocol by <a href="http://neuroware.io">Neuroware</a> that allows individuals to safely manage their own identity, empowering them with the ability to access services without needing to create or remember multiple usernames, passwords and account profiles.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingFive">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                What are Chancery stamps?
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                        <div class="panel-body">
+                            <p>Stamps emoby the web of trust that is the foundation for our platform, they act as endorsements whilst also gamifying the experience. Set your own goals based upon a host of avaiable milestones and track your progress. Identity has never been as social as it is with the Blockchain Embassy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-warning alert-block btn-reset">
+                <strong>WARNING</strong>
+                The options below are final, without verification and could result in critical change or loss of access to your account:<br /><br />
+                <a href="#" class="btn btn-xl btn-block btn-danger">RESET DEVICE</a>
+            </div>
+        </div>
+        <div id="loader"></div>
+    </div>
+
+    <nav id="footer" class="row preload">
+        <a href="#" class="col-xs-4 active page-nav" data-direction="left" id="nav-visas">VISAS</a>
+        <a href="#" class="col-xs-4 page-nav" data-direction="none" id="nav-connect">CONNECT</a>
+        <a href="#" class="col-xs-4 page-nav" data-direction="right" id="nav-stamps">STAMPS</a>
+    </nav>
+
+    <form id="setup-form">
+        
+        <div id="sub-header">CHANCERY PASSPORT <strong>SETUP THIS DEVICE</strong></div>
+        <span class="alert alert-block alert-default">
+            <img src="assets/img/setup.png" />
+        </span>
+        
+        <div class="setup-only">
+            <div class="alert alert-info alert-block">
+                <strong>REMINDER</strong>
+                We do not read, store or process any of the private information required to setup this device, nor do the final private keys that get generated at the end ever get transmitted or stored. Instead, we use deterministic methods for first generating the necessary salts required to then hash your simple user credentials. However, because of the isolated nature of how this works, if you ever forget the private information entered below and loose this device, you may loose access to this account.
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Full Name</label>
+                <div class="col-xs-7">
+                    <input id="name" type="text" class="form-control" placeholder="As seen in passport" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Country of Birth</label>
+                <div class="col-xs-7">
+                    <select id="nation" class="form-control">
+                        <option value="">-- Select Country --</option>
+                        <option value="Malaysia">Malaysia</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Date of Birth</label>
+                <div class="col-xs-7">
+                    <div class="row fluid">
+                        <div class="col-xs-4">
+                            <select id="birth-day" class="form-control">
+                                <option value="">DD</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4">
+                            <select id="birth-month" class="form-control">
+                                <option value="">MM</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4">
+                            <select id="birth-year" class="form-control">
+                                <option value="">YY</option>
+                                <option value="00">00</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                                <option value="32">32</option>
+                                <option value="33">33</option>
+                                <option value="34">34</option>
+                                <option value="35">35</option>
+                                <option value="36">36</option>
+                                <option value="37">37</option>
+                                <option value="38">38</option>
+                                <option value="39">39</option>
+                                <option value="40">40</option>
+                                <option value="41">41</option>
+                                <option value="42">42</option>
+                                <option value="43">43</option>
+                                <option value="44">44</option>
+                                <option value="45">45</option>
+                                <option value="46">46</option>
+                                <option value="47">47</option>
+                                <option value="48">48</option>
+                                <option value="49">49</option>
+                                <option value="50">50</option>
+                                <option value="51">51</option>
+                                <option value="52">52</option>
+                                <option value="53">53</option>
+                                <option value="54">54</option>
+                                <option value="55">55</option>
+                                <option value="56">56</option>
+                                <option value="57">57</option>
+                                <option value="58">58</option>
+                                <option value="59">59</option>
+                                <option value="60">60</option>
+                                <option value="61">61</option>
+                                <option value="62">62</option>
+                                <option value="63">63</option>
+                                <option value="64">64</option>
+                                <option value="65">65</option>
+                                <option value="66">66</option>
+                                <option value="67">67</option>
+                                <option value="68">68</option>
+                                <option value="69">69</option>
+                                <option value="70">70</option>
+                                <option value="71">71</option>
+                                <option value="72">72</option>
+                                <option value="73">73</option>
+                                <option value="34">74</option>
+                                <option value="75">75</option>
+                                <option value="76">76</option>
+                                <option value="77">77</option>
+                                <option value="78">78</option>
+                                <option value="79">79</option>
+                                <option value="80">80</option>
+                                <option value="81">81</option>
+                                <option value="82">82</option>
+                                <option value="83">83</option>
+                                <option value="84">84</option>
+                                <option value="85">85</option>
+                                <option value="86">86</option>
+                                <option value="87">87</option>
+                                <option value="88">88</option>
+                                <option value="89">89</option>
+                                <option value="90">90</option>
+                                <option value="91">91</option>
+                                <option value="92">92</option>
+                                <option value="93">93</option>
+                                <option value="94">94</option>
+                                <option value="95">95</option>
+                                <option value="96">96</option>
+                                <option value="97">97</option>
+                                <option value="98">98</option>
+                                <option value="99">99</option>
+                                <option value="00">00</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Email Address</label>
+                <div class="col-xs-7">
+                    <input id="email" type="email" class="form-control" placeholder="May be used later" />
+                </div>
+            </div>
+            <div class="alert alert-warning alert-block">
+                <strong>WARNING</strong>
+                This device will not store these or transmit them anywhere. If you forget them, you will loose access to this account. These are also used to generate a random secret, which you must store somewhere, or replace with a valid API key if you have signed-up for a trusted service provider.
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Username</label>
+                <div class="col-xs-7">
+                    <input id="username" type="text" class="form-control" placeholder="Something memorable" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Password</label>
+                <div class="col-xs-7">
+                    <input id="password" type="password" class="form-control" placeholder="The stronger the better" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Repeat Password</label>
+                <div class="col-xs-7">
+                    <input id="password-repeat" type="password" class="form-control" placeholder="Just to be certain" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Secret</label>
+                <div class="col-xs-7">
+                    <input id="secret" type="text" class="form-control" placeholder="The secret security sauce" />
+                </div>
+            </div>
+            <div class="alert alert-danger alert-block">
+                <strong>IMPORTANT</strong>
+                DO NOT SHARE THIS SECRET WITH ANYONE!!!<br /><br />
+                IT COSTS CRYPTO-CURRENCY TO STORE DATA ON A BLOCKCHAIN. ALL TRANSACTIONS ARE MADE DIRECT FROM THIS DEVICE. THE ONLY FEES ARE AUTO-DEDUCTED NETWORK TRANSACTION FEES
+            </div>
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Blockchain</label>
+                <div class="col-xs-7">
+                    <select id="chain" class="form-control">
+                        <option value="">-- Select Chain --</option>
+                        <!--
+                        <option value="btc">Bitcoin</option>
+                        <option value="doge">Dogecoin</option>
+                        <option value="btct">Bitcoin Testnet</option>
+                        -->
+                        <option value="doget">Dogecoin Testnet</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-grouo">
+                <button type="submit" class="btn btn-submit btn-primary btn-xl btn-block">ACTIVATE PASSPORT</button>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+        <div class="login-only" style="display: none;">
+            <div class="form-group row">
+                <label class="label-control col-xs-5">Password</label>
+                <div class="col-xs-7">
+                    <input id="login-password" type="password" class="form-control" placeholder="Login to this device ..." />
+                </div>
+            </div>
+            <div class="form-grouo">
+                <a href="#" class="btn btn-submit btn-primary btn-xl btn-block btn-login">LOGIN</a>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="demo-only">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Coming Soon</h4>
+                </div>
+                <div class="modal-body">
+                    <p>This is currently an extremely alpha release with very limited functionality. It is merely a working prtotype for the Virtual GovHack Blockchain Hackathon taking place in Dubai and will be further improved upon soon.</p>
+                    <p>In the meantime, we do have a working demonstration of how your blockchain-based identity can be utilized by ATA-Plus.com -  and allow for you to login without needing to deal with usernames and passwords...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a type="button" class="btn btn-primary" href="http://bce.asia/chancery" target="_blank">LEARN MORE</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="login-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">ATA-Plus Community</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You are attepting to access <a href="#">ata-plus.com</a> as <strong>Mark Smalley</strong> - please verify this action?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+                    <a type="button" class="btn btn-success" href="http://ata-plus.com" target="_blank">YES</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="messages-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Zayan Yassin - ATA-Plus</h4>
+                </div>
+                <div class="modal-body">
+                    <span class="alert alert-warning alert-block">
+                        <strong>Mark:</strong>
+                        Why I am I unable to invest Bitcoin in active deals? Says KYC still pending...
+                    </span>
+                    <span class="alert alert-info alert-block">
+                        <strong>Zayan:</strong>
+                        You first need to obtain a chancery finacial stamp or complete KYC via our traditional payment gateway 
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a type="button" class="btn btn-success" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">REPLY</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="service-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Selected Visa</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Description of Visa Service</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a class="btn btn-success" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">PIN</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="service-modal2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Active Visa</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Description of Visa Service</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a type="button" class="btn btn-success" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">ACCESS</a>
+                    <a type="button" class="btn btn-danger" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">UN-PIN</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="milestone-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Selected Stamp</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Description of Selected Stamp</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a type="button" class="btn btn-success" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">PIN</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="milestone-modal2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Active Stamp</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Description of Active Stamp</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a type="button" class="btn btn-danger" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">UN-PIN</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="edit-profile">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Edit Profile</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Updste your profile using the form below:</p>
+                    <hr>
+                    <form>
+                        <div class="form-group row">
+                            <label class="label-control col-xs-5">Your Name</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" placeholder="Full Name" value="Mark Smalley" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="label-control col-xs-5">Country of Birth</label>
+                            <div class="col-xs-7">
+                                <select class="form-control">
+                                    <option value="">-- Select Nationality --</option>
+                                    <option value="my">Malaysia</option>
+                                    <option value="uk" selected="selected">United Kingdom</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="label-control col-xs-5">Current Location</label>
+                            <div class="col-xs-7">
+                                <select class="form-control">
+                                    <option value="">-- Select Location --</option>
+                                    <option value="my" selected="selected">Malaysia</option>
+                                    <option value="uk">United Kingdom</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <a class="btn btn-success" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">UPDATE</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-payment">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Your Data Credit Account</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Your data-credit address is where the application stores funds used throughout its lifetime. The information stored on this device has not yet been stored anywhere else. In order to store data on the blockchains, you need to send some crypto-currency first:</p>
+                    <div class="qr-holder" data-content=""></div>
+                    <p>The address is <strong class="address">XXX</strong></p>
+                    <p>The minimum required to encode the setup data is <strong class="required">YYY</strong>.</p>
+                    <p>You may leave this window open and watch the progress unfold, or close this pop-up and continue exploring the application, where we will then pop-up a new window once the entire process is complete and the data is confirmed.</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">CLOSE PROGRESS</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <a class="btn btn-danger btn-block" href="#" data-dismiss="modal" data-toggle="modal" data-target="#demo-only">CANCEL OPERATION</a>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="default-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body"></div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+</div>
+    
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+    
+<!-- BLOCKSTRAP DEPENDENCIES -->
+<script src="blockstrap/js/dependencies/crypto.js"></script>
+<script src="blockstrap/js/dependencies/sha3.js"></script>
+<script src="blockstrap/js/dependencies/bitcoinjs-lib.js"></script>
+<script src="blockstrap/js/dependencies/qrcode.js"></script>
+
+<!-- BLOCKSTRAP CORE -->
+<script src="options.js"></script>
+<script src="blockstrap/js/blockstrap.js"></script>
+    
+<!-- BLOCKSTRAP MODULES -->
+<script src="blockstrap/js/modules/api.js"></script>
+<script src="blockstrap/js/modules/blockchains.js"></script>
+<script src="blockstrap/js/modules/data.js"></script>
+<script src="blockstrap/js/modules/filters.js"></script>
+
+<!-- PASSPORT SPECIFIC -->    
+<script src="assets/js/passport.js"></script>
+
+
+</body>
+</html>
