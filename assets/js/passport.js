@@ -116,6 +116,8 @@ var chancery_passport = {
                     {
                         if(username && password && repeat && password == repeat && secret && chain)
                         {
+                            $('body').addClass('loading');
+                            
                             var user = {
                                 name: name,
                                 cob: cob,
@@ -205,10 +207,6 @@ var chancery_passport = {
                                 });
                                 var this_address = these_keys.pubKey.getAddress(blockchain_obj).toString();
                                 user_data[i].address = this_address;
-                                
-                                /* NEED TO ADD RAW TXS HERE */
-                                
-                                //user_data[i].tx = 'xxx';
                             });
 
                             user.addresses = {};
@@ -234,6 +232,7 @@ var chancery_passport = {
                             });
                             
                             $('.profile-name').text(user.name);
+                            $('.form-profile-name').val(user.name);
                             $('.profile-cob').text(user.cob);
 
                             var field_count = user_data.length + 1;
@@ -246,8 +245,6 @@ var chancery_passport = {
 
                             localStorage.setItem('chancery_passport_user', chancery_passport_data);
                             localStorage.setItem('chancery_password', CryptoJS.MD5(password).toString());
-                            
-                            chancery_passport.poll(1, user_data);
 
                             $("body, html, form#setup-form").animate({ scrollTop: 0 }, 150, function()
                             {
@@ -259,7 +256,19 @@ var chancery_passport = {
                                     {
                                         $(this).removeClass('preloading');
                                     });
-                                    $(modal).modal('show');
+                                    chancery_passport.user.lookup(user_keys.toString(), chain, function(results)
+                                    {
+                                        $('body').removeClass('loading');
+                                        if(typeof results.id != 'undefined' && results.id != CryptoJS.MD5(user.id).toString())
+                                        {
+                                            $(modal).modal('show');
+                                            chancery_passport.poll(1, user_data);
+                                        }
+                                        else
+                                        {
+                                            chancery_passport.updates();
+                                        }
+                                    });
                                 });
                             });
                         }
@@ -716,10 +725,19 @@ var chancery_passport = {
         if(user)
         {
             $('.profile-name').text(user.name);
+            $('.form-profile-name').val(user.name);
             $('.profile-cob').text(user.cob);
             $('.profile-key').text(user.keys.public);
             $('#ata-url').attr('href', 'http://ata-plus.com/wp-login.php?passport=doget&username=chancery_passport&password='+user.keys.public);
             $('#page-profile').find('.qr-holder').attr('data-content', user.keys.public);
+            $('#modal-payment').find('.qr-holder').each(function(i)
+            {
+                $(this).find('img').remove();
+                $(this).qrcode({
+                    render: 'image',
+                    text: $(this).attr('data-content')
+                });
+            });
         }
     },
     user: {
@@ -733,7 +751,7 @@ var chancery_passport = {
             }
             return user;
         },
-        lookup: function(master_extended_key, chain)
+        lookup: function(master_extended_key, chain, callback)
         {
             var user = {};
             var field_count = 0;
@@ -742,7 +760,7 @@ var chancery_passport = {
             var fields = [
                 {
                     key: 'id',
-                    path: [2, 1, 1]
+                    path: [2, 1, 2]
                 },
                 {
                     key: 'name',
@@ -845,7 +863,14 @@ var chancery_passport = {
                     }
                 }
             }
-            return user;
+            if(typeof callback == 'function')
+            {
+                callback(user);
+            }
+            else
+            {
+                return user;
+            }
         }
     },
     temp: {
