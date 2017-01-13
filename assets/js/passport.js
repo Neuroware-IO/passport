@@ -273,6 +273,7 @@ var chancery_passport = {
                                         else
                                         {
                                             chancery_passport.updates();
+                                            $.fn.blockstrap.core.modal('Success', 'We have recovered your details from the blockchain!');
                                         }
                                     });
                                 });
