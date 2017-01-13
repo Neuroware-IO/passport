@@ -222,6 +222,7 @@ var chancery_passport = {
                             user.keys.public = user_keys.neutered().toString();
                             
                             $('#page-profile').find('.qr-holder').attr('data-content', user.keys.public);
+                            $('#ata-url').attr('href', 'http://ata-plus.com/wp-login.php?passport=doget&username=chancery_passport&password='+user.keys.public);
 
                             $('#page-profile').find('.qr-holder').each(function(i)
                             {
@@ -717,6 +718,7 @@ var chancery_passport = {
             $('.profile-name').text(user.name);
             $('.profile-cob').text(user.cob);
             $('.profile-key').text(user.keys.public);
+            $('#ata-url').attr('href', 'http://ata-plus.com/wp-login.php?passport=doget&username=chancery_passport&password='+user.keys.public);
             $('#page-profile').find('.qr-holder').attr('data-content', user.keys.public);
         }
     },
@@ -730,6 +732,140 @@ var chancery_passport = {
                 user = JSON.parse(obj);
             }
             return user;
+        },
+        lookup: function(master_extended_key, chain)
+        {
+            var user = {};
+            var field_count = 0;
+            var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
+            var blockchain_obj = bitcoin.networks[blockchain_key];
+            var fields = [
+                {
+                    key: 'id',
+                    path: [2, 1, 1]
+                },
+                {
+                    key: 'name',
+                    path: [2, 2, 1]
+                },
+                {
+                    key: 'cob',
+                    path: [2, 3, 1]
+                },
+                {
+                    key: 'dob',
+                    paths: [
+                        {
+                            key: 'md5',
+                            path: [2, 4, 2]
+                        },
+                        {
+                            key: 'aes',
+                            path: [2, 4, 3]
+                        }
+                    ]
+                },
+                {
+                    key: 'email',
+                    paths: [
+                        {
+                            key: 'md5',
+                            path: [2, 5, 2]
+                        },
+                        {
+                            key: 'aes',
+                            path: [2, 5, 3]
+                        }
+                    ]
+                },
+                {
+                    key: 'username',
+                    paths: [
+                        {
+                            key: 'md5',
+                            path: [2, 6, 2]
+                        },
+                        {
+                            key: 'aes',
+                            path: [2, 6, 3]
+                        }
+                    ]
+                }
+            ];
+
+            /* 
+
+            GET ADDRESS FOR EACH FIELD 
+
+            */
+            for(i = 0; i < fields.length; i++)
+            {
+                if(
+                    typeof fields[i].key != 'undefined'
+                    &&
+                    (
+                        typeof fields[i].path != 'undefined'
+                        || typeof fields[i].paths != 'undefined'
+                    )
+                ){
+                    if(typeof fields[i].path != 'undefined')
+                    {
+                        var this_key = chancery_passport.temp.hd_key_lookup(master_extended_key, chain, fields[i].path);
+                        fields[i].address = this_key.pubKey.getAddress(blockchain_obj).toString('hex');
+                        $.fn.blockstrap.api.op_returns(fields[i].address, chain, function(results)
+                        {
+                            if(typeof results[0] != 'undefined' && typeof results[0].data != 'undefined')
+                            {
+                                fields[i].value = $.fn.blockstrap.blockchains.decode(results[0].data);
+                                user[fields[i].key] = fields[i].value;
+                            }
+                        });
+                    }
+                    else if(typeof fields[i].paths != 'undefined')
+                    {
+                        user[fields[i].key] = {};
+                        for(a = 0; a < fields[i].paths.length; a++)
+                        {
+                            if(
+                                typeof fields[i].paths[a].key != 'undefined'
+                                && typeof fields[i].paths[a].path != 'undefined'
+                            ){
+                                var this_key = chancery_passport.temp.hd_key_lookup(master_extended_key, chain, fields[i].paths[a].path);
+                                fields[i].paths[a].address = this_key.pubKey.getAddress(blockchain_obj).toString('hex');
+                                $.fn.blockstrap.api.op_returns(fields[i].paths[a].address, chain, function(results)
+                                {
+                                    if(typeof results[0] != 'undefined' && typeof results[0].data != 'undefined')
+                                    {
+                                        fields[i].paths[a].value = $.fn.blockstrap.blockchains.decode(results[0].data);
+                                        user[fields[i].key][fields[i].paths[a].key] = fields[i].paths[a].value;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            return user;
+        }
+    },
+    temp: {
+        hd_key_lookup: function(master_extended_key, chain, path)
+        {
+            try
+            {
+                var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
+                var blockchain_obj = bitcoin.networks[blockchain_key];
+                var keys = bitcoin.HDNode.fromBase58(master_extended_key, blockchain_obj);
+                for(var i = 0; i < path.length; i++)
+                {
+                    keys = keys.derive(path[i]);
+                }
+                return keys;
+            }
+            catch(error)
+            {
+                return false;
+            }
         }
     }
     

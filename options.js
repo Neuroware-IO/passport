@@ -550,7 +550,8 @@ var blockstrap_options = {
                             fees: "fees_value"
                         },
                         transactions: {
-                            key: "tx_list",
+                            key: "",
+                            inner: "tx_list",
                             txid: "id",
                             size: "N/A",
                             block: "block_height",
