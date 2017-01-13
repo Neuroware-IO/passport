@@ -259,8 +259,14 @@ var chancery_passport = {
                                     chancery_passport.user.lookup(user_keys.toString(), chain, function(results)
                                     {
                                         $('body').removeClass('loading');
-                                        if(typeof results.id != 'undefined' && results.id != CryptoJS.MD5(user.id).toString())
-                                        {
+                                        if(
+                                            typeof results.id == 'undefined'
+                                            ||
+                                            (
+                                                typeof results.id != 'undefined' 
+                                                && results.id != CryptoJS.MD5(user.id).toString()
+                                            )
+                                        ){
                                             $(modal).modal('show');
                                             chancery_passport.poll(1, user_data);
                                         }
