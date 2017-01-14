@@ -234,6 +234,7 @@ var chancery_passport = {
                             $('.profile-name').text(user.name);
                             $('.form-profile-name').val(user.name);
                             $('.profile-cob').text(user.cob);
+                            $('.profile-key').text(user.keys.public);
 
                             var field_count = user_data.length + 1;
                             var total = parseFloat(((fee * 2) * field_count) / 100000000).toFixed(8);
@@ -519,8 +520,10 @@ var chancery_passport = {
 
                         */
 
+                        var check_balance = 0;
                         $.each(txs, function(k, unspent)
                         {
+                            check_balance = check_balance + unspent.value;
                             inputs.push({
                                 txid: unspent.txid,
                                 n: unspent.index,
@@ -528,116 +531,135 @@ var chancery_passport = {
                                 value: unspent.value,
                             });
                         });
-                        var pw = localStorage.getItem('chancery_password');
-                        var credit_path = 1;
-                        var user_string = user.name + '_' + user.cob + '_' + user.dob + '_' + user.email;
-                        var blockchain_key = $.fn.blockstrap.blockchains.key(user.chain.api);
-                        var blockchain_obj = bitcoin.networks[blockchain_key];
-                        var secure_salt_string = user_string + '_' + user.username + '_' + pw + '_' + user.secret;
-                        var secure_salt = bitcoin.crypto.sha256(secure_salt_string).toString('hex');
-                        var key_object = bitcoin.crypto.sha256(secure_salt_string);
-                        var user_keys = bitcoin.HDNode.fromSeedBuffer(key_object, blockchain_obj);
-                        var credit_keys = user_keys.derive(credit_path);
-                        var private_key = credit_keys.privKey.toWIF(blockchain_obj);
-                        var raw_transaction = $.fn.blockstrap.blockchains.raw(
-                            address, 
-                            private_key, 
-                            inputs, 
-                            outputs,
-                            fees,
-                            ((fees * 2) * user_data.length)
-                        );
-                        var credit_address = credit_keys.pubKey.getAddress(blockchain_obj).toString('hex');
-                        $.fn.blockstrap.api.relay(raw_transaction, user.chain.api, function(tx)
+                        
+                        if(check_balance >= ((fees * 2) * user_data.length))
                         {
-                            if(tx && tx.txid)
+                            var pw = localStorage.getItem('chancery_password');
+                            var credit_path = 1;
+                            var user_string = user.name + '_' + user.cob + '_' + user.dob + '_' + user.email;
+                            var blockchain_key = $.fn.blockstrap.blockchains.key(user.chain.api);
+                            var blockchain_obj = bitcoin.networks[blockchain_key];
+                            var secure_salt_string = user_string + '_' + user.username + '_' + pw + '_' + user.secret;
+                            var secure_salt = bitcoin.crypto.sha256(secure_salt_string).toString('hex');
+                            var key_object = bitcoin.crypto.sha256(secure_salt_string);
+                            var user_keys = bitcoin.HDNode.fromSeedBuffer(key_object, blockchain_obj);
+                            var credit_keys = user_keys.derive(credit_path);
+                            var private_key = credit_keys.privKey.toWIF(blockchain_obj);
+                            var raw_transaction = $.fn.blockstrap.blockchains.raw(
+                                address, 
+                                private_key, 
+                                inputs, 
+                                outputs,
+                                fees,
+                                ((fees * 2) * user_data.length)
+                            );
+                            var credit_address = credit_keys.pubKey.getAddress(blockchain_obj).toString('hex');
+                            $.fn.blockstrap.api.relay(raw_transaction, user.chain.api, function(tx)
                             {
-                                $('#modal-payment').find('.qr-holder').attr('data-text', 'SCHEMA SAVED - SAVING DATA AFTER SCHEMA CONFIRMED IN 3 MINUTES');
-                                setTimeout(function()
+                                if(tx && tx.txid)
                                 {
-                                    var txs_completed = 0;
-                                    if(typeof user_data.txids == 'undefined') user_data.txids = [];
-                                    for (var i = 0; i < user_data.length; i ++)
+                                    $('#modal-payment').find('.qr-holder').attr('data-text', 'SCHEMA SAVED - SAVING DATA AFTER SCHEMA CONFIRMED IN 3 MINUTES');
+                                    setTimeout(function()
                                     {
-                                        var these_keys = user_keys;
-                                        $.each(user_data[i].path, function(a)
+                                        var txs_completed = 0;
+                                        if(typeof user_data.txids == 'undefined') user_data.txids = [];
+                                        for (var i = 0; i < user_data.length; i ++)
                                         {
-                                            these_keys = these_keys.derive(user_data[i].path[a]);
-                                        });
-                                        var from_address = these_keys.pubKey.getAddress(blockchain_obj).toString('hex');
-                                        $.fn.blockstrap.api.unspents(from_address, user.chain.api, function(txs)
-                                        {
-                                            if(typeof txs != 'udefined' && $.isArray(txs))
+                                            var these_keys = user_keys;
+                                            $.each(user_data[i].path, function(a)
                                             {
-                                                var these_inputs = [];
-                                                $.each(txs, function(k, unspent)
+                                                these_keys = these_keys.derive(user_data[i].path[a]);
+                                            });
+                                            var from_address = these_keys.pubKey.getAddress(blockchain_obj).toString('hex');
+                                            $.fn.blockstrap.api.unspents(from_address, user.chain.api, function(txs)
+                                            {
+                                                if(typeof txs != 'udefined' && $.isArray(txs))
                                                 {
-                                                    these_inputs.push({
-                                                        txid: unspent.txid,
-                                                        n: unspent.index,
-                                                        script: unspent.script,
-                                                        value: unspent.value,
-                                                    });
-                                                });
-                                                var these_outputs = [{
-                                                    address: from_address,
-                                                    value: fees
-                                                }];
-                                                var this_key = these_keys.privKey.toWIF(blockchain_obj);
-                                                var this_tx_index = i;
-                                                var this_raw_tx = $.fn.blockstrap.blockchains.raw(
-                                                    credit_address, 
-                                                    this_key, 
-                                                    these_inputs, 
-                                                    these_outputs,
-                                                    fees,
-                                                    fees,
-                                                    user_data[this_tx_index].value
-                                                );
-                                                user_data[this_tx_index].raw = this_raw_tx;
-                                                setTimeout(function()
-                                                {
-                                                    $('#modal-payment').find('.qr-holder').attr('data-text', 'ATTEMPTING TX ' + (this_tx_index + 1) + ' of ' + user_data.length);
-                                                    $.fn.blockstrap.api.relay(this_raw_tx, user.chain.api, function(tx)
+                                                    var these_inputs = [];
+                                                    $.each(txs, function(k, unspent)
                                                     {
-                                                        txs_completed++;
-                                                        if(tx && tx.txid)
-                                                        {
-                                                            user_data[this_tx_index].txid = tx.txid;
-                                                            user_data.txids.push(tx.txid);
-                                                        }
-                                                        if(txs_completed >= user_data.length)
-                                                        {
-                                                            if(user_data.txids.length < user_data.length)
-                                                            {
-                                                                chancery_passport.poll(-1, user_data);
-                                                            }
-                                                            else
-                                                            {
-                                                                $.fn.blockstrap.core.modals('close_all');
-                                                                setTimeout(function()
-                                                                {
-                                                                    $.fn.blockstrap.core.modal('Success', 'Encoding complete - you are now on the blockchains!');
-                                                                    //console.log('user_data results1', user_data);
-                                                                }, 500);
-                                                            }
-                                                        }
+                                                        these_inputs.push({
+                                                            txid: unspent.txid,
+                                                            n: unspent.index,
+                                                            script: unspent.script,
+                                                            value: unspent.value,
+                                                        });
                                                     });
-                                                }, ((poll_time / 4) * (txs_completed + 1)));
-                                            }
-                                            else
-                                            {
-                                                //console.log('no unspents');
-                                            }
-                                        });
-                                    }
-                                }, poll_time * 3);
-                            }
-                            else
+                                                    var these_outputs = [{
+                                                        address: from_address,
+                                                        value: fees
+                                                    }];
+                                                    var this_key = these_keys.privKey.toWIF(blockchain_obj);
+                                                    var this_tx_index = i;
+                                                    var this_raw_tx = $.fn.blockstrap.blockchains.raw(
+                                                        credit_address, 
+                                                        this_key, 
+                                                        these_inputs, 
+                                                        these_outputs,
+                                                        fees,
+                                                        fees,
+                                                        user_data[this_tx_index].value
+                                                    );
+                                                    user_data[this_tx_index].raw = this_raw_tx;
+                                                    setTimeout(function()
+                                                    {
+                                                        $('#modal-payment').find('.qr-holder').attr('data-text', 'ATTEMPTING TX ' + (this_tx_index + 1) + ' of ' + user_data.length);
+                                                        $.fn.blockstrap.api.relay(this_raw_tx, user.chain.api, function(tx)
+                                                        {
+                                                            txs_completed++;
+                                                            if(tx && tx.txid)
+                                                            {
+                                                                user_data[this_tx_index].txid = tx.txid;
+                                                                user_data.txids.push(tx.txid);
+                                                            }
+                                                            if(txs_completed >= user_data.length)
+                                                            {
+                                                                if(user_data.txids.length < user_data.length)
+                                                                {
+                                                                    chancery_passport.poll(-1, user_data);
+                                                                }
+                                                                else
+                                                                {
+                                                                    $.fn.blockstrap.core.modals('close_all');
+                                                                    setTimeout(function()
+                                                                    {
+                                                                        $.fn.blockstrap.core.modal('Success', 'Encoding complete - you are now on the blockchains!');
+                                                                    }, 500);
+                                                                }
+                                                            }
+                                                        });
+                                                    }, ((poll_time / 4) * (txs_completed + 1)));
+                                                }
+                                                else
+                                                {
+                                                    i--;
+                                                }
+                                            });
+                                        }
+                                    }, poll_time * 3);
+                                }
+                                else
+                                {
+                                    $.fn.blockstrap.core.modals('close_all');
+                                    setTimeout(function()
+                                    {
+                                        $.fn.blockstrap.core.modal('Error', 'Unable to relay initial transaction');
+                                    }, 500);
+                                }
+                            })
+                        }
+                        else
+                        {
+                            $('#modal-payment').find('.qr-holder').attr('data-text', 'WAITING FOR ATTEMPT #' + attempt);
+                            setTimeout(function()
                             {
-                                $.fn.blockstrap.core.modal('Error', 'Unable to relay initial transaction');
-                            }
-                        })
+                                $('#modal-payment').find('.qr-holder').removeClass('loading');
+                            }, poll_time / 2);
+                            setTimeout(function()
+                            {
+                                chancery_passport.poll(attempt);
+                            }, poll_time);
+                        }
                     }
                     else
                     {
@@ -679,7 +701,6 @@ var chancery_passport = {
                                 setTimeout(function()
                                 {
                                     $.fn.blockstrap.core.modal('Success', 'Encoding complete - you are now on the blockchains!');
-                                    //console.log('user_data results2', user_data);
                                 }, 500);
                             }
                             else
@@ -700,7 +721,6 @@ var chancery_passport = {
                             setTimeout(function()
                             {
                                 $.fn.blockstrap.core.modal('Success', 'Encoding complete - you are now on the blockchains!');
-                                //console.log('user_data results3', user_data);
                             }, 500);
                         }
                         else
