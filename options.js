@@ -46,7 +46,7 @@ var blockstrap_options = {
             },
             fee: 0.0001,
             op_return: true,
-            op_limit: 80
+            op_limit: 38
         },
         dasht: {
             blockchain: "DashPay (Testnet)",
@@ -56,7 +56,7 @@ var blockstrap_options = {
             },
             fee: 0.0001,
             op_return: true,
-            op_limit: 80
+            op_limit: 78
         },
         doget: {
             blockchain: "Dogecoin (Testnet)",
@@ -67,7 +67,7 @@ var blockstrap_options = {
             },
             fee: 2,
             op_return: true,
-            op_limit: 80
+            op_limit: 78
         },
         ltct: {
             blockchain: "Litecoin (Testnet)",
@@ -77,7 +77,7 @@ var blockstrap_options = {
             },
             fee: 0.001,
             op_return: true,
-            op_limit: 80
+            op_limit: 0
         },
         multi: {
             private: true,
@@ -96,7 +96,7 @@ var blockstrap_options = {
             },
             fee: 0.0001,
             op_return: true,
-            op_limit: 80
+            op_limit: 38
         },
         dash: {
             blockchain: "DashPay",
@@ -106,7 +106,7 @@ var blockstrap_options = {
             },
             fee: 0.0001,
             op_return: true,
-            op_limit: 80
+            op_limit: 38
         },
         doge: {
             blockchain: "Dogecoin",
@@ -117,7 +117,7 @@ var blockstrap_options = {
             },
             fee: 1,
             op_return: true,
-            op_limit: 80
+            op_limit: 78
         },
         ltc: {
             blockchain: "Litecoin",
@@ -127,7 +127,7 @@ var blockstrap_options = {
             },
             fee: 0.001,
             op_return: true,
-            op_limit: 80
+            op_limit: 0
         }
     },
     apis: {
