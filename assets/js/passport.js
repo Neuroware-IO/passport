@@ -769,9 +769,8 @@ var chancery_passport = {
     },
     user: {
         avatar: {
-            create: function(master_extended_key, chain, base_64_blob, base_path, skip_setup)
+            create: function(master_extended_key, chain, base_64_blob, base_path)
             {
-                if(typeof skip_setup == 'undefined') skip_setup = false;
                 if(typeof base_path == 'undefined') base_path = 999999999;
                 var results = {
                     success: false,
@@ -797,99 +796,23 @@ var chancery_passport = {
                     }
                     if(keys && typeof keys.derive == 'function')
                     {
-                        var this_key = keys.derive(base_path);
-                        var funding_address = this_key.pubKey.getAddress(blockchain_obj).toString('hex');
                         var op_limit = $.fn.blockstrap.settings.blockchains[chain].op_limit;
-                        var fee = $.fn.blockstrap.settings.blockchains[chain].fee * 100000000;
-                        var chain_name = $.fn.blockstrap.settings.blockchains[chain].blockchain;
                         var chunks = base_64_blob.match(new RegExp('.{1,' + op_limit + '}', 'g'));
-                        var chunk_count = chunks.length + 1;
-                        var total = parseFloat(((fee * 2) * chunk_count) / 100000000).toFixed(8);
-                        var required = chain_name + " " + total;
-                        
-                        results.message = 'Please Fund: ' + funding_address + ' ' + required;
-                        
-                        $.fn.blockstrap.api.unspents(funding_address, chain, function(txs)
+                        var data = [];
+                        for(c = 0; c < chunks.length; c++)
                         {
-                            console.log('txs', txs);
-                            if(typeof txs != 'undefined' && $.isArray(txs))
-                            {
-                                var inputs = [];
-                                var outputs = [];
-                                var data_txs = [];
-                                var check_balance = 0;
-                                $.each(txs, function(k, unspent)
-                                {
-                                    check_balance = check_balance + unspent.value;
-                                    inputs.push({
-                                        txid: unspent.txid,
-                                        n: unspent.index,
-                                        script: unspent.script,
-                                        value: unspent.value,
-                                    });
-                                });
-                                console.log('check_balance', check_balance);
-                                console.log('needed', ((fee * 2) * chunks.length));
-                                if(check_balance >= ((fee * 2) * chunks.length))
-                                {
-                                    results.message = 'Unable to setup ' + chunks.length + ' chunks';
-                                    $.each(chunks, function(i)
-                                    {
-                                        var keys = this_key.derive(i+1);
-                                        outputs.push({
-                                            address: keys.pubKey.getAddress(blockchain_obj).toString('hex'),
-                                            value: fee * 2
-                                        });
-                                        data_txs.push({
-                                            key: keys.privKey.toWIF(blockchain_obj),
-                                            address: keys.pubKey.getAddress(blockchain_obj).toString('hex'),
-                                            data: chunks[i]
-                                        });
-                                    });
-                                    results.txs = data_txs;
-                                    if(skip_setup)
-                                    {
-                                        chancery_passport.user.relays(results, chain, funding_address, fee, function(res)
-                                        {
-                                            return res;
-                                        });
-                                    }
-                                    else
-                                    {
-                                        console.log('outputs', outputs);
-                                        console.log('data_txs', data_txs);
-                                        var raw_tx = $.fn.blockstrap.blockchains.raw(
-                                            funding_address, 
-                                            this_key.privKey.toWIF(blockchain_obj), 
-                                            inputs, 
-                                            outputs,
-                                            fee,
-                                            ((fee * 2) * chunks.length)
-                                        );
-                                        console.log('raw_tx', raw_tx);
-                                        var poll_time = 60000;
-                                        $.fn.blockstrap.api.relay(raw_tx, chain, function(tx)
-                                        {
-                                            results.message = 'Unable to relay initial transaction';
-                                            if(tx && tx.txid)
-                                            {
-                                                results.txid = tx.txid;
-                                                setTimeout(function()
-                                                {   
-                                                    chancery_passport.user.relays(results, chain, funding_address, fee, function(res)
-                                                    {
-                                                        return res;
-                                                    });
-                                                }, 6000);
-                                            }
-                                        })
-                                    }
-                                }
-                            }
-                        });                        
+                            var this_index = c + 1;
+                            data.push({
+                                path: [base_path, this_index],
+                                value: chunks[c]
+                            });
+                        }
+                        chancery_passport.temp.relay(master_extended_key, base_path, chain, data, function(relay_results)
+                        {
+                            console.log('relay_results', relay_results);
+                        });
                     }
                 }
-                return results;
             },
             read: function(master_extended_key, chain, chunks, callback, base_path)
             {
@@ -905,14 +828,21 @@ var chancery_passport = {
                     var chunk_address = chunk_key.pubKey.getAddress(blockchain_obj).toString('hex');
                     $.fn.blockstrap.api.op_returns(chunk_address, chain, function(txs)
                     {
-                        if(txs && typeof txs[0].data != 'undefined')
+                        if(txs && typeof txs[0] != 'undefined' && typeof txs[0].data != 'undefined')
                         {
                             var clean_data = $.fn.blockstrap.blockchains.decode(txs[0].data);
                             data_string = data_string + '' + clean_data;
                         }
                     });
                 }
-                callback(data_string);
+                if(typeof callback == 'function')
+                {
+                    callback(data_string);
+                }
+                else
+                {
+                    return data_string;
+                }
             }
         },
         get: function()
@@ -1045,140 +975,6 @@ var chancery_passport = {
             {
                 return user;
             }
-        },
-        relays: function(data, chain, funding_address, fee, callback)
-        {
-            var results = {
-                success: false,
-                message: 'Unable to relay all chunks'
-            };
-            if(typeof data.txs != 'undefined' && $.isArray(data.txs))
-            {
-                var op_check = 0;
-                $.each(data.txs, function(i)
-                {
-                    var tx = data.txs[i];
-                    var data_tx_id = i;
-                    $.fn.blockstrap.api.op_returns(tx.address, chain, function(d)
-                    {
-                        op_check++;
-                        
-                        console.log('d', d);
-                        
-                        if(typeof d[0] != 'undefined' && typeof d[0].data != 'undefined')
-                        {
-                            data.txs[data_tx_id].value = $.fn.blockstrap.blockchains.decode(d[0].data);
-                            data.txs[data_tx_id].txid = d[0].txid;
-                            
-                            if(op_check >= data.txs.length)
-                            {
-                                var done = true;
-                                $.each(data.txs, function(a)
-                                {
-                                    if(typeof data.txs[a].txid == 'undefined') done = false;
-                                });
-                                if(done)
-                                {
-                                    results.success = true;
-                                    results.message = 'All chunks committeed';
-                                    results.data = data;
-                                    return results;
-                                }
-                                else
-                                {
-
-                                    setTimeout(function()
-                                    {
-                                        chancery_passport.user.relays(data, chain, funding_address, fee, callback);
-                                    }, 6000);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            setTimeout(function()
-                            {
-                                $.fn.blockstrap.api.unspents(tx.address, chain, function(these_txs)
-                                {
-                                    if(typeof these_txs != 'undefined' && $.isArray(these_txs))
-                                    {
-                                        var these_inputs = [];
-                                        $.each(these_txs, function(k, unspent)
-                                        {
-                                            these_inputs.push({
-                                                txid: unspent.txid,
-                                                n: unspent.index,
-                                                script: unspent.script,
-                                                value: unspent.value,
-                                            });
-                                        });
-                                        var these_outputs = [{
-                                            address: funding_address,
-                                            value: fee
-                                        }];
-                                        var this_raw_tx = $.fn.blockstrap.blockchains.raw(
-                                            funding_address, 
-                                            tx.key, 
-                                            these_inputs, 
-                                            these_outputs,
-                                            fee,
-                                            fee,
-                                            tx.data
-                                        );
-                                        $.fn.blockstrap.api.relay(this_raw_tx, chain, function(this_tx)
-                                        {
-                                            if(this_tx && this_tx.txid)
-                                            {
-                                                var done = true;
-                                                data.txs[data_tx_id].txid = this_tx.txid;
-                                                
-                                                if(op_check >= data.txs.length)
-                                                {
-                                                    $.each(data.txs, function(b)
-                                                    {
-                                                        if(typeof data.txs[b].txid == 'undefined') done = false;
-                                                    });
-                                                    if(done)
-                                                    {
-                                                        results.success = true;
-                                                        results.message = 'All chunks committeed';
-                                                        results.data = data;
-                                                        return results;
-                                                    }
-                                                    else
-                                                    {
-                                                        setTimeout(function()
-                                                        {
-                                                            chancery_passport.user.relays(data, chain, funding_address, fee, callback);
-                                                        }, 6000);
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if(op_check >= data.txs.length)
-                                                {
-                                                    setTimeout(function()
-                                                    {
-                                                        chancery_passport.user.relays(data, chain, funding_address, fee, callback);
-                                                    }, 6000);
-                                                }
-                                            }
-                                        });
-                                    }
-                                    else if(op_check >= data.txs.length)
-                                    {
-                                        setTimeout(function()
-                                        {
-                                            chancery_passport.user.relays(data, chain, funding_address, fee, callback);
-                                        }, 6000);
-                                    }
-                                });
-                            }, 1000 * data_tx_id);
-                        }
-                    });
-                });
-            }
         }
     },
     temp: {
@@ -1198,6 +994,322 @@ var chancery_passport = {
             catch(error)
             {
                 return false;
+            }
+        },
+        relay: function(extended_key, credit_path, chain, data, callback)
+        {
+            var keys = false;
+            var blockchain_key = false;
+            var blockchain_obj = false;
+            var valid = true;
+            var credit_address = false;
+            var results = {
+                success: false,
+                message: 'Unknown Error'
+            };
+            try
+            {
+                blockchain_key = $.fn.blockstrap.blockchains.key(chain);
+                blockchain_obj = bitcoin.networks[blockchain_key];
+                keys = bitcoin.HDNode.fromBase58(extended_key, blockchain_obj);
+                if(typeof keys.derive != 'function')
+                {
+                    valid = false;
+                    results.message = 'Invalid extended key';
+                }
+                var credit_keys = keys;
+                for(i = 0; i < credit_path.length; i++)
+                {
+                    credit_keys = credit_keys.derive(credit_path[i]);
+                }
+                credit_address = credit_keys.pubKey.getAddress(blockchain_obj).toString('hex');
+            }
+            catch(error)
+            {
+                valid = false;
+                results.message = 'Invalid extended key';
+            }
+            if(
+                typeof credit_path == 'undefined'
+                && !$.isArray(credit_path)
+            ){
+                valid = false;
+                results.message = 'Invalid credit path';
+            }
+            if(typeof callback != 'function') 
+            {
+                valid = false;
+                results.message = 'No callback set!';
+            }
+            if(
+                typeof data == 'undefined' 
+                || !$.isArray(data)
+                || data.length < 1
+            ){
+                valid = false;
+                results.message = 'No data set!';
+            }
+            else
+            {
+                $.each(data, function(d)
+                {
+                    if(
+                        typeof data[d].path == 'undefined'
+                        || !$.isArray(data[d].path)
+                        || typeof data[d].value == 'undefined'
+                        || !data[d].value
+                    ){
+                        valid = false;
+                        results.message = 'Data not set properly!';
+                    }
+                    else
+                    {
+                        if(keys)
+                        {
+                            var this_key = keys;
+                            $.each(data[d].path, function(p)
+                            {
+                                this_key = this_key.derive(parseInt(data[d].path[p]));
+                            });
+                            data[d].key = this_key.privKey.toWIF(blockchain_obj);
+                            data[d].address = this_key.pubKey.getAddress(blockchain_obj).toString('hex');
+                            if(credit_address) data[d].credit = credit_address;
+                        }
+                    }
+                });
+            }
+            if(
+                typeof chain == 'undefined' 
+                || typeof $.fn.blockstrap.settings.blockchains[chain] == 'undefined'
+            ){
+                valid = false;
+                results.message = 'Invalid blockchain selected';
+            }
+            if(valid)
+            {
+                var success = true;
+                var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
+                var blockchain_obj = bitcoin.networks[blockchain_key];
+                var keys = bitcoin.HDNode.fromBase58(extended_key, blockchain_obj);
+                var credit_keys = keys;
+                for(i = 0; i < credit_path.length; i++)
+                {
+                    credit_keys = credit_keys.derive(credit_path[i]);
+                }
+                var credit_address = credit_keys.pubKey.getAddress(blockchain_obj).toString('hex');
+                var credit_key = credit_keys.privKey.toWIF(blockchain_obj);
+                chancery_passport.temp.prepare(credit_address, credit_key, chain, data, function(txs)
+                {
+                    if(!txs || !$.isArray(txs))
+                    {
+                        success = false;
+                        results.message = 'Unable to Prepare Relays';
+                    }
+                    else
+                    {
+                        results.txs = txs;
+                    }
+                    chancery_passport.temp.commit(txs, chain, function(log)
+                    {
+                        if(!log || !$.isArray(log))
+                        {
+                            success = false;
+                            results.message = 'Unable to Commit Data';
+                        }
+                        else
+                        {
+                            results.log = log;
+                        }
+                        results.success = success;
+                        callback(results);
+                    });
+                });
+            }
+            else if(typeof callback == 'function')
+            {
+                callback(results);
+            }
+            else
+            {
+                return results;
+            }
+        },
+        prepare: function(credit_address, credit_key, chain, data, callback)
+        {
+            $.fn.blockstrap.api.unspents(credit_address, chain, function(unspent_txs)
+            {
+                var multiplier = 3;
+                var fee = $.fn.blockstrap.settings.blockchains[chain].fee * 100000000;
+                var hundreds = Math.ceil(data.length / 100);
+                console.log('hundreds', hundreds);
+                if(typeof unspent_txs != 'undefined' && $.isArray(unspent_txs))
+                {
+                    var inputs = [];
+                    var outputs = [];
+                    var data_txs = [];
+                    var check_balance = 0;
+                    $.each(unspent_txs, function(k, unspent)
+                    {
+                        check_balance = check_balance + unspent.value;
+                        inputs.push({
+                            txid: unspent.txid,
+                            n: unspent.index,
+                            script: unspent.script,
+                            value: unspent.value,
+                        });
+                    });
+                    if(hundreds < 2) multiplier = 1;
+                    if(check_balance >= (((fee * 2) * data.length) + (fee * (1 + (hundreds * multiplier)))))
+                    {
+                        $.each(data, function(i)
+                        {
+                            outputs.push({
+                                address: data[i].address,
+                                value: fee * 2
+                            });
+                        });
+                        var raw_tx = $.fn.blockstrap.blockchains.raw(
+                            credit_address, 
+                            credit_key, 
+                            inputs, 
+                            outputs,
+                            (fee * (hundreds * multiplier)),
+                            ((fee * 2) * data.length)
+                        );
+                        $.fn.blockstrap.api.relay(raw_tx, chain, function(tx)
+                        {
+                            if(tx && tx.txid)
+                            {
+                                data.txids = [];
+                                data.txids.push(tx.txid);
+                                callback(data);
+                            }
+                            else
+                            {
+                                console.log('required', parseInt((((fee * 2) * data.length) + (fee * (1 + (hundreds * multiplier)))) / 100000000));
+                                setTimeout(function()
+                                {
+                                    chancery_passport.temp.prepare(credit_address, credit_key, chain, data, callback);
+                                }, 60000);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        console.log('required', parseInt((((fee * 2) * data.length) + (fee * (1 + (hundreds * multiplier)))) / 100000000));
+                        setTimeout(function()
+                        {
+                            chancery_passport.temp.prepare(credit_address, credit_key, chain, data, callback);
+                        }, 60000);
+                    }
+                }
+                else
+                {
+                    console.log('required', parseInt((((fee * 2) * data.length) + (fee * (1 + (hundreds * multiplier)))) / 100000000));
+                    setTimeout(function()
+                    {
+                        chancery_passport.temp.prepare(credit_address, credit_key, chain, data, callback);
+                    }, 60000);
+                }
+            });
+        },
+        commit: function(txs, chain, callback, successes)
+        {
+            if(typeof successes == 'undefined') successes = [];
+            var txs_left_to_relay = [];
+            for(i = 0; i < txs.length; i++)
+            {
+                var this_tx = txs[i];
+                $.fn.blockstrap.api.unspents(this_tx.address, chain, function(unspent_txs)
+                {
+                    if(typeof unspent_txs != 'undefined' && $.isArray(unspent_txs))
+                    {
+                        var inputs = [];
+                        var data_txs = [];
+                        var check_balance = 0;
+                        var fee = $.fn.blockstrap.settings.blockchains[chain].fee * 100000000;
+                        $.each(unspent_txs, function(k, unspent)
+                        {
+                            check_balance = check_balance + unspent.value;
+                            inputs.push({
+                                txid: unspent.txid,
+                                n: unspent.index,
+                                script: unspent.script,
+                                value: unspent.value,
+                            });
+                        });
+                        if(check_balance >= (fee * 2))
+                        {
+                            var outputs = [{
+                                address: this_tx.credit,
+                                value: fee
+                            }];
+                            var raw_tx = $.fn.blockstrap.blockchains.raw(
+                                this_tx.credit, 
+                                this_tx.key, 
+                                inputs, 
+                                outputs,
+                                fee,
+                                fee,
+                                this_tx.value
+                            );
+                            $.fn.blockstrap.api.relay(raw_tx, chain, function(tx)
+                            {
+                                if(tx && tx.txid)
+                                {
+                                    successes.push(tx.txid);
+                                    if((i +1) >= txs.length)
+                                    {
+                                        if(txs_left_to_relay.length < 1)
+                                        {
+                                            callback(successes);
+                                        }
+                                        else
+                                        {
+                                            setTimeout(function()
+                                            {
+                                                chancery_passport.temp.commit(txs_left_to_relay, chain, callback, successes);
+                                            }, 60000);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    txs_left_to_relay.push(this_tx);
+                                    if((i +1) >= txs.length)
+                                    {
+                                        setTimeout(function()
+                                        {
+                                            chancery_passport.temp.commit(txs_left_to_relay, chain, callback, successes);
+                                        }, 60000);
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            txs_left_to_relay.push(this_tx);
+                            if((i +1) >= txs.length)
+                            {
+                                setTimeout(function()
+                                {
+                                    chancery_passport.temp.commit(txs_left_to_relay, chain, callback, successes);
+                                }, 60000);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        txs_left_to_relay.push(this_tx);
+                        if((i +1) >= txs.length)
+                        {
+                            setTimeout(function()
+                            {
+                                chancery_passport.temp.commit(txs_left_to_relay, chain, callback, successes);
+                            }, 60000);
+                        }
+                    }
+                });
             }
         }
     }
