@@ -1141,7 +1141,6 @@ var chancery_passport = {
                 var multiplier = 3;
                 var fee = $.fn.blockstrap.settings.blockchains[chain].fee * 100000000;
                 var hundreds = Math.ceil(data.length / 100);
-                console.log('hundreds', hundreds);
                 if(typeof unspent_txs != 'undefined' && $.isArray(unspent_txs))
                 {
                     var inputs = [];
@@ -1186,7 +1185,6 @@ var chancery_passport = {
                             }
                             else
                             {
-                                console.log('required', parseInt((((fee * 2) * data.length) + (fee * (1 + (hundreds * multiplier)))) / 100000000));
                                 setTimeout(function()
                                 {
                                     chancery_passport.temp.prepare(credit_address, credit_key, chain, data, callback);
@@ -1196,7 +1194,6 @@ var chancery_passport = {
                     }
                     else
                     {
-                        console.log('required', parseInt((((fee * 2) * data.length) + (fee * (1 + (hundreds * multiplier)))) / 100000000));
                         setTimeout(function()
                         {
                             chancery_passport.temp.prepare(credit_address, credit_key, chain, data, callback);
@@ -1205,7 +1202,6 @@ var chancery_passport = {
                 }
                 else
                 {
-                    console.log('required', parseInt((((fee * 2) * data.length) + (fee * (1 + (hundreds * multiplier)))) / 100000000));
                     setTimeout(function()
                     {
                         chancery_passport.temp.prepare(credit_address, credit_key, chain, data, callback);
@@ -1312,8 +1308,72 @@ var chancery_passport = {
                 });
             }
         }
+    },
+    search: function(extended_key, chain, fields, callback)
+    {
+        var data = {};
+        var keys = false;
+        var blockchain_key = false;
+        var blockchain_obj = false;
+        try
+        {
+            blockchain_key = $.fn.blockstrap.blockchains.key(chain);
+            blockchain_obj = bitcoin.networks[blockchain_key];
+            keys = bitcoin.HDNode.fromBase58(extended_key, blockchain_obj);
+        }
+        catch(error)
+        {
+            
+        }
+        if(
+            keys && typeof keys.derive == 'function'
+            && typeof data != 'undefined'
+            && $.isArray(fields)
+        ){
+            for(i = 0; i < fields.length; i++)
+            {
+                if(
+                    typeof fields[i] != 'undefined'
+                    && typeof fields[i].name != 'undefined'
+                    && typeof fields[i].path != 'undefined'
+                    && $.isArray(fields[i].path)
+                ){
+                    var this_key = keys;
+                    var field_name = fields[i].name;
+                    $.each(fields[i].path, function(f)
+                    {
+                        this_key = this_key.derive(fields[i].path[f]);
+                    });
+                    var this_address = this_key.pubKey.getAddress(blockchain_obj).toString('hex');
+                    $.fn.blockstrap.api.op_returns(this_address, chain, function(txs)
+                    {
+                        if(
+                            typeof txs[0] != 'undefined'
+                            && typeof txs[0].data != 'undefined'
+                        ){
+                            var this_data = $.fn.blockstrap.blockchains.decode(txs[0].data);
+                            data[field_name] = this_data;
+                        }
+                        if((i+1) >= fields.length)
+                        {
+                            if(typeof callback == 'function')
+                            {
+                                callback(data);
+                            }
+                            else
+                            {
+                                return data;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        else
+        {
+            return keys;
+        }
     }
-    
 };
 
 $(document).ready(function()

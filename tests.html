@@ -12,6 +12,11 @@
     
 </head>
 <body>
+
+<p>
+    Name: <span class="blockchain-field" data-key="dgub8kXBZ7ymNWy2R1PirBJ4xT9dxzQ6UtzxzcAm9r9BCVbsSC79dm9rzcfDWgQo1yVyQ2Se25CEfm6YsguwabRKuHJeyDJ5VzStWGNhERT8sAH" data-chain="doget" data-path="2,2,1" data-name="name">FETCHING FIELD FROM BLOCKCHAINS</span><br />
+    Country of Birth: <span class="blockchain-field" data-key="dgub8kXBZ7ymNWy2R1PirBJ4xT9dxzQ6UtzxzcAm9r9BCVbsSC79dm9rzcfDWgQo1yVyQ2Se25CEfm6YsguwabRKuHJeyDJ5VzStWGNhERT8sAH" data-chain="doget" data-path="2,3,1" data-name="cob">FETCHING FIELD FROM BLOCKCHAINS</span>
+</p>
     
 <p>
     <div class="blockchain-image" data-key="dgub8kXBZ7ymNWy2RaBNA71KCf3EzwjwxQgdcAPJHkMYWrNdCGiWUVZEeCAtGX7LsdvMDHoQQ3bLXK2XaAoFbQdKpS3iJ578MozrRyX7BXhXBdx" data-chain="doget" data-chunks="25" data-size="64">FETCHING IMAGE FROM BLOCKCHAINS</div>
@@ -44,24 +49,51 @@
 <script src="assets/js/passport.js"></script>
 
 <script>
+var chancery_tests = {
+    fields: function()
+    {
+        $('.blockchain-field').each(function()
+        {
+            var wrapper = $(this);
+            var key = $(this).attr('data-key');
+            var chain = $(this).attr('data-chain');
+            var path = $(this).attr('data-path').split(',');
+            var name = $(this).attr('data-name');
+            if(key && chain && path)
+            {
+                chancery_passport.search(key, chain, [{name: name, path: path}], function(data)
+                {
+                    $(wrapper).text(data[name]);
+                    $(wrapper).attr('data-key', '');
+                });
+            }
+        });
+    },
+    images: function()
+    {
+        $('.blockchain-image').each(function()
+        {
+            var wrapper = $(this);
+            var key = $(this).attr('data-key');
+            var chain = $(this).attr('data-chain');
+            var size = parseInt($(this).attr('data-size'));
+            var chunks = parseInt($(this).attr('data-chunks'));
+            if(key && chain && size && chunks)
+            {
+                chancery_passport.user.avatar.read(key, chain, chunks, function(data)
+                {
+                    $(wrapper).text('');
+                    $(wrapper).attr('data-key', '');
+                    $(wrapper).css({width: size, height: size, backgroundImage: 'url(' + data + ')'});
+                });
+            }
+        });
+    }
+};
 $(document).ready(function()
 {
-    $('.blockchain-image').each(function()
-    {
-        var wrapper = $(this);
-        var key = $(this).attr('data-key');
-        var chain = $(this).attr('data-chain');
-        var size = parseInt($(this).attr('data-size'));
-        var chunks = parseInt($(this).attr('data-chunks'));
-        if(key && chain && size && chunks)
-        {
-            chancery_passport.user.avatar.read(key, chain, chunks, function(data)
-            {
-                $(wrapper).text('');
-                $(wrapper).css({width: size, height: size, backgroundImage: 'url(' + data + ')'});
-            });
-        }
-    });
+    chancery_tests.fields();
+    chancery_tests.images();
 });
 </script>
     
